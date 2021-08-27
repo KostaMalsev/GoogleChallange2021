@@ -20,12 +20,20 @@ def getRoute(M,F,length):
         else:
             #initiate bomb replication:
             res1 = actM(M,F)
-            res2 = actF(M,F)
+           	 print(res1) 
 
-            #print(res1,res2)
+           
 
             #follow the paths, see where it gets us:
             len1 = getRoute(res1[0],res1[1],length+1)
+            
+            if(len1 == -1):
+	            res2 = actF(M,F)
+            	len2 = getRoute(res2[0],res2[1],length+1)
+            else:
+            	getMin(len1,len2)
+            	return minLen
+            	
             len2 = getRoute(res2[0],res2[1],length+1)
 
 
@@ -90,9 +98,6 @@ def solution(M,F):
 
     if(Mtarget == 0 or Ftarget == 0):
         return str(0)
-
-
-
 
 
     shortPath = getRoute(1,1,0)
