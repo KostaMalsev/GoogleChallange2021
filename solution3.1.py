@@ -19,6 +19,7 @@ def isDead(M,F):
     length = 0
 
     #if it's plain simple multiple, its dead
+    #ntr = M > 1 and F > 1
     ntr = M > 1 and F > 1
     if(b == 0 and ntr):
         #print('dead',M,F)
@@ -42,18 +43,45 @@ def isDead(M,F):
         else:
             b = F % M
         
-
         #print(M,F,'b',b,'a',a,'length:',length)
         
-
     if(b <= 1):
         #print('false',M,F,'b=',b,'a=',a,'length:',length)
         return False
     else:
-        #print(M,F)
-        return True
+        if( a % b == 0 ):
+            #print(M,F)
+            return True
         
     
+
+
+def getFibIndex(fn):
+    #print('Is Fib',fn)
+    n = round(math.log(fn) *2.078087 + 1.672276)
+    return n
+
+
+def checkFib(M,F):
+    #check if fibonachi
+    if(isFib(M) and isFib(F) and F >1 and M >1):
+        f = getFibIndex(M)
+        n = getFibIndex(F)
+        #print('fibs:',f,n,'MF',M,F)
+        if(abs(f-n) ==1):
+            #print('iS fib:',max(f,n))
+            return max(f,n)
+    return -1
+
+
+
+
+
+def isFib(n):
+
+    phi = 0.5 + 0.5 * math.sqrt(5.0)
+    a = phi * n
+    return n==0 or abs(round(a) - a) < 1.0 / n #n == 0 or abs(round(a) - a) < 1.0 / n
 
 
 
@@ -73,7 +101,7 @@ def recon(M,F):
             #print('before: M=',M,'F=',F,'res=',res,length)
          #   impossible == True
         
-        if(M ==1 or F ==1):
+        if((M ==1 or F ==1) and (F>0 and M >0)  ):
             if(not M == F):
                 if(M > F):
                     length = length + M - 1 
@@ -83,10 +111,11 @@ def recon(M,F):
                 length = length+1
             found = True
         else:
+                        
             #print(M,F)       
-            if ( M < 1 or F < 1 or isDead(M,F) ):#or isDead(M,F) or F==M
+            if ( (M < 1 or F < 1) ):#or isDead(M,F) or F==M
                 impossible = True
-            else:                
+            else:
 
                 if(M > F):
                     res = M - (M//F)*F
@@ -96,6 +125,13 @@ def recon(M,F):
                     res = F - (F//M)*M
                     length = length + F//M
                     F = res
+                
+                    #if(M > 1 and F >1):
+                     #   n = checkFib(M,F)
+                     #   if(not(n==-1)):
+                     #       length =  length + n-3 #length
+                     #       found = True
+                        
 
                 #print(M,F,res)
 
@@ -117,8 +153,8 @@ def solution(M,F):
     #if(not M.isdigit() or not F.isdigit()):
     #    return "impossible"
 
-    M = long(M)
-    F = long(F)
+    M = int(M)
+    F = int(F)
     
     if(M > 10**50 or F>10**50):
         return "impossible"
@@ -142,6 +178,5 @@ def solution(M,F):
     if(minLen == -1):
         return "impossible"
     #else: return ("%.0f" % (minLen))
-    else: return ("%.0f" % (long(minLen)))
+    else: return ("%.0f" % (int(minLen//1)))
     #else: return ("%.0g" % (minLen))
-
