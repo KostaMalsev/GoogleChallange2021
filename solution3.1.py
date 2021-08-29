@@ -14,7 +14,8 @@ def isDead(M,F):
     length = 0
 
     #if it's plain simple multiple, its dead
-    if(b == 0 and min(M,F)>1):
+    ntr = M > 1 and F > 1
+    if(b == 0 and ntr):
         #print('dead',M,F)
         return True
     
@@ -22,22 +23,25 @@ def isDead(M,F):
 
         #print(M,F,'b',b,'a','ceil:',math.ceil((M-F)/F)*F)
 
-        a = min(M,F)
-        
         if(M > F):
-            M = M - math.ceil((M-F)/F)*F
-            length = length + math.ceil((M-F)/F)*F
+            a = F
+            M = M - (M//F)*F #math.ceil((M-F)/F)*F
+            length = length + (M//F)
         else:
-            F = F - math.ceil((F-M)/M)*M
-            length = length + math.ceil((F-M)/M)*M
+            a = M
+            F = F - (F//M)*M
+            length = length + (F//M)
                 
-        b = max(M,F) % min(M,F)
+        if(M > F):
+            b = M % F
+        else:
+            b = F % M
         
 
         #print(M,F,'b',b,'a',a,'length:',length)
         
 
-    if(b<=1):
+    if(b <= 1):
         #print('false',M,F,'b=',b,'a=',a,'length:',length)
         return False
     else:
@@ -55,11 +59,10 @@ def recon(M,F):
     impossible = False
     found = False
 
-    
-    i=0
+    #i=0
     while( (not impossible) and (not found) ):
         
-        i = i+1
+        #i = i+1
         #if(i > 10**10):
             #print('Performance issues',M,F)
             #print('before: M=',M,'F=',F,'res=',res,length)
@@ -67,15 +70,20 @@ def recon(M,F):
         
         if(M ==1 or F ==1):
             if(not M == F):
-                length = length + max(M,F)-1 
+                if(M > F):
+                    length = length + M - 1 
+                else:
+                    length = length + F - 1
+            else:
+                length = length+1
             found = True
         else:
             #print(M,F)       
-            if (M < 1 or F < 1 ):#or isDead(M,F) or F==M
+            if ( M < 1 or F < 1 or isDead(M,F) ):#or isDead(M,F) or F==M
                 impossible = True
             else:                
 
-                if(M>F):
+                if(M > F):
                     res = M - (M//F)*F
                     length = length + M//F
                     M = res                    
@@ -101,11 +109,24 @@ def recon(M,F):
 def solution(M,F):
 
 
-    if(not M.isdigit() or not F.isdigit()):
-        return "impossible"
+    #if(not M.isdigit() or not F.isdigit()):
+    #    return "impossible"
 
-    M = int(M)
-    F = int(F)
+    M = long(M)
+    F = long(F)
+    
+    if(M > 10**50 or F>10**50):
+        return "impossible"
+    
+    if(M  < 1 or F < 1):
+        return "impossible"
+        
+    if(M==1 and F ==1):
+        return ("%.0f" % (0))
+    
+    if( (M//1) < M or (F//1) < F): 
+        return "impossible"
+    
 
     minLen = 0
 
@@ -115,6 +136,7 @@ def solution(M,F):
 
     if(minLen == -1):
         return "impossible"
-    else: return ("%.0f" % (minLen))
+    #else: return ("%.0f" % (minLen))
+    else: return ("%.0f" % (long(minLen)))
     #else: return ("%.0g" % (minLen))
 
