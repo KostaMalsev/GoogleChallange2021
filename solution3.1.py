@@ -1,110 +1,120 @@
 import math
 
 
-minLen = -1
-Mtarget=-1
-Ftarget=-1
 
 
-def getRoute(M,F,length):
 
-    global minLen
-    global Mtarget
-    global Ftarget
 
-    if(M > Mtarget or F > Ftarget):
-        return -1
-    else:
-        if(M == Mtarget and F == Ftarget):
-            return length
+
+
+def isDead(M,F):
+
+    a = max(M,F)
+    b = max(M,F) % min(M,F)
+    length = 0
+
+    #if it's plain simple multiple, its dead
+    if(b == 0 and min(M,F)>1):
+        #print('dead',M,F)
+        return True
+    
+    while(b >1 and (a % b > 0)):
+
+        #print(M,F,'b',b,'a','ceil:',math.ceil((M-F)/F)*F)
+
+        a = min(M,F)
+        
+        if(M > F):
+            M = M - math.ceil((M-F)/F)*F
+            length = length + math.ceil((M-F)/F)*F
         else:
-            #initiate bomb replication:
-            res1 = actM(M,F)
-           	 print(res1) 
+            F = F - math.ceil((F-M)/M)*M
+            length = length + math.ceil((F-M)/M)*M
+                
+        b = max(M,F) % min(M,F)
+        
 
-           
+        #print(M,F,'b',b,'a',a,'length:',length)
+        
 
-            #follow the paths, see where it gets us:
-            len1 = getRoute(res1[0],res1[1],length+1)
-            
-            if(len1 == -1):
-	            res2 = actF(M,F)
-            	len2 = getRoute(res2[0],res2[1],length+1)
-            else:
-            	getMin(len1,len2)
-            	return minLen
-            	
-            len2 = getRoute(res2[0],res2[1],length+1)
-
-
-            #print(len1,len2)
-            #if len2 > -1 and len1 > -1 : print('two choices:',len2,len1,res1,res2)
-
-            #if len2 == -1 and len1 == -1 : return -1
-            if(len2 == -1 and len1 == -1):
-                #print('dead end',minLen)
-                return minLen
-                #len2 = getRoute(res2[0],res2[1],length+1)
-                #len1 = getRoute(res1[0],res1[1],length+1)
-
-            getMin(len1,len2)
-
-            return minLen
-
-
-
-
-def actM(M,F):
-    return M,F+M
-
-def actF(M,F):
-    return M+F,F
-
-
-def getMin(len1,len2):
-
-    global minLen
-
-    if(minLen > -1):
-
-        if len1 == -1 and len2 > -1 and len2 < minLen : minLen = len2
-        if len2 == -1 and len1 > -1 and len1 < minLen : minLen = len1
-        if len2 > -1 and len1 > -1 and min(len1,len2) < minLen : minLen = math.min(len1,len2)
-
+    if(b<=1):
+        #print('false',M,F,'b=',b,'a=',a,'length:',length)
+        return False
     else:
+        #print(M,F)
+        return True
+        
+    
 
-        if len1 == -1 and len2 > -1 : minLen = len2
-        if len2 == -1 and len1 > -1 : minLen = len1
-        if len2 > -1 and len1 > -1 : minLen = min(len1,len2)
 
 
+
+def recon(M,F):
+
+    length = 0
+    impossible = False
+    found = False
+
+    
+    i=0
+    while( (not impossible) and (not found) ):
+        
+        i = i+1
+        #if(i > 10**10):
+            #print('Performance issues',M,F)
+            #print('before: M=',M,'F=',F,'res=',res,length)
+         #   impossible == True
+        
+        if(M ==1 or F ==1):
+            if(not M == F):
+                length = length + max(M,F)-1 
+            found = True
+        else:
+            #print(M,F)       
+            if (M < 1 or F < 1 ):#or isDead(M,F) or F==M
+                impossible = True
+            else:                
+
+                if(M>F):
+                    res = M - (M//F)*F
+                    length = length + M//F
+                    M = res                    
+                else:
+                    res = F - (F//M)*M
+                    length = length + F//M
+                    F = res
+
+                #print(M,F,res)
+
+
+
+    if(found):
+        return length
+
+    if(impossible):
+        return -1
+
+    
 
 
 
 def solution(M,F):
 
-    global Mtarget
-    global Ftarget
-    global minLen
 
-    minLen = -1
+    if(not M.isdigit() or not F.isdigit()):
+        return "impossible"
 
-    Mtarget = int(M)
-    Ftarget = int(F)
+    M = int(M)
+    F = int(F)
 
+    minLen = 0
 
-    if(Mtarget == 1 and Ftarget == 1):
-        return str(0)
+    minLen = recon(M,F)
 
-    if(Mtarget == 0 or Ftarget == 0):
-        return str(0)
-
-
-    shortPath = getRoute(1,1,0)
-
-    #print(minLen)
+    #print(("%.0f" % minLen))
 
     if(minLen == -1):
-        return 'impossible'
-    else: return str(minLen)
+        return "impossible"
+    else: return ("%.0f" % (minLen))
+    #else: return ("%.0g" % (minLen))
 
