@@ -9,8 +9,13 @@ import math
 
 def isDead(M,F):
 
-    a = max(M,F)
-    b = max(M,F) % min(M,F)
+    if(M > F):
+        a = M
+        b = M % F
+    else:
+        a = F
+        b = F % M
+
     length = 0
 
     #if it's plain simple multiple, its dead
