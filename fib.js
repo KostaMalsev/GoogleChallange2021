@@ -19,5 +19,7 @@ while(i <= 164)
 	i++
 	
 }
+
+console.log(toString(sum))
 	
 	
