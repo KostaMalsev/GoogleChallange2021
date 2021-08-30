@@ -2,129 +2,15 @@ import math
 
 
 
-
-
-
-
-
-def isDead(M,F):
-
-    if(M > F):
-        a = M
-        b = M % F
-    else:
-        a = F
-        b = F % M
-
-    length = 0
-
-    #if it's plain simple multiple, its dead
-    #ntr = M > 1 and F > 1
-    ntr = M > 1 and F > 1
-    if(b == 0 and ntr):
-        #print('dead',M,F)
-        return True
-
-    while(b >1 and (a % b > 0)):
-
-        #print(M,F,'b',b,'a','ceil:',math.ceil((M-F)/F)*F)
-
-        if(M > F):
-            a = F
-            M = M - (M//F)*F #math.ceil((M-F)/F)*F
-            length = length + (M//F)
-        else:
-            a = M
-            F = F - (F//M)*M
-            length = length + (F//M)
-
-        if(M > F):
-            b = M % F
-        else:
-            b = F % M
-
-        #print(M,F,'b',b,'a',a,'length:',length)
-
-    if(b <= 1):
-        #print('false',M,F,'b=',b,'a=',a,'length:',length)
-        return False
-    else:
-        if( a % b == 0 ):
-            #print(M,F)
-            return True
-
-
-
-
-def getFibIndex(fn):
-    #print('Is Fib',fn)
-    n = round(math.log(fn) *2.078087 + 1.672276)
-    return n
-
-
-def checkFib(M,F):
-    #check if fibonachi
-    if(isFib(M) and isFib(F)):
-        f = getFibIndex(M)
-        n = getFibIndex(F)
-        if(abs(f-n) ==1):
-            print('iS fib:',max(f,n))
-            return max(f,n)
-    return -1
-
-
-
-
-
-def isFib(n):
-
-    phi = 0.5 + 0.5 * math.sqrt(5.0)
-    a = phi * n
-    return n==0 or abs(round(a) - a) < 1.0 / n #n == 0 or abs(round(a) - a) < 1.0 / n
-
-
-#fibonachi number of series starting from A,B >1
-def isTrick(M,F):
-
-    mx = max(M,F)
-    mn = min(M,F)
-    b = 34*min(M,F) - 21*max(M,F)
-    a = (mx - 55*b)/34
-
-    #if(b > 1):
-    if(b > 0 and M>1 and F>1):
-        if(a//1 == a and a > 1):#a is integer
-            #print('found trick',a//1,b)
-            #return True,a//1,b,9
-            return True,round(a//1),b,9
-    #else:
-        #if(b == 1 and a==1):
-            #is fibonachi
-    return False,0,0,0
-
-
-
-
-isFibb = False
-
-
 def recon(M,F):
 
     length = 0
     impossible = False
     found = False
-    global isFibb
 
-    #i=0
     while( (not impossible) and (not found) ):
 
-        #i = i+1
-        #if(i > 10**10):
-            #print('Performance issues',M,F)
-            #print('before: M=',M,'F=',F,'res=',res,length)
-         #   impossible == True
-
-        if((M ==1 or F ==1) and (F>0 and M >0)  ):
+        if((M ==1 or F ==1) ):
             if(not M == F):
                 if(M > F):
                     length = length + M - 1
@@ -133,38 +19,33 @@ def recon(M,F):
             else:
                 length = length+1
             found = True
+
         else:
 
-            #print(M,F)
-            if ( (M < 1 or F < 1) ):#or isDead(M,F) or F==M
+            if ( (M < 1 or F < 1) ):
                 impossible = True
+                break
             else:
 
                 if(M > F):
-                    res = M - (M//F)*F
-                    length = length + M//F
-                    M = res
+                    res = M - ((M-F)//F+1)*F
+
+                    if(M > 30):
+                        M = res
+                        length = length + ((M-F+1)//F)
+                    else:
+                        M = M - F
+                        length = length+1
+
                 else:
-                    res = F - (F//M)*M
-                    length = length + F//M
-                    F = res
-
-                rs = isTrick(M,F)
-                if( rs[0]):
-                    M = rs[1]
-                    F = rs[2]
-                    length = length + rs[3]
-
-                if(False and (M > 5 and F >5)):
-                    n = checkFib(M,F)
-                    if(not(n==-1)):
-                        length =  length + n-2 #length
-                        found = True
-
-
-                #print(M,F,res)
-
-
+                    res = F - ((F-M+1)//M)*M
+                    
+                    if(F > 30):
+                        F = res
+                        length = length + ((F-M+1)//M)
+                    else:
+                        F = F - M
+                        length = length+1
 
     if(found):
         return length
@@ -174,38 +55,81 @@ def recon(M,F):
 
 
 
-
-
 def solution(M,F):
 
-
-    #if(not M.isdigit() or not F.isdigit()):
-    #    return "impossible"
 
     M = int(M)
     F = int(F)
 
-    if(M > 10**50 or F>10**50):
-        return "impossible"
-
-    if(M  < 1 or F < 1):
-        return "impossible"
-
     if(M==1 and F ==1):
-        return ("%.0f" % (0))
-
-    if( (M//1) < M or (F//1) < F):
-        return "impossible"
+        return print(str(0))
 
 
     minLen = 0
 
     minLen = recon(M,F)
 
-    #print(("%.0f" % minLen))
-
     if(minLen == -1):
         return "impossible"
-    #else: return ("%.0f" % (minLen))
-    else: return ("%.0f" % (int(minLen)))
-    #else: return ("%.0g" % (minLen))
+
+    else: return (str(minLen))
+
+
+#print(solution('99194853094755497','61305790721611591'))#fibonachi 83 and 84 elements order of 38
+#print(solution('99194853094755497','6428163631445425602')) #with adding 3 times of the action
+
+#print(solution('3928413764606871165730','6356306993006846248183')) #Fibonachi adding one itiration on F
+
+#print(solution('139583862445','225851433717')) #wFibonachi adding one itiration on F
+#print(solution(str(55835073295300465536628086585786672357234389  ),str(55835073295300465536628086585786672357234389+34507973060837282187130139035400899082304280  ))) #with adding 3 times of the action
+#print(solution(str(5),str(5+3))) #with adding 3 times of the action
+
+#print(solution(str(34*2+55*7),str(21*2+34*7)))
+#print(solution(str(13),str(13+1*8))) #with adding 3 times of the action
+
+
+
+
+if(True):
+
+    print(solution('2','2'))
+    print(solution('4','2'))
+    print(solution('1','1'))
+    print(solution('2','1'))
+    print(solution('4','7'))
+    print(solution('16','9'))
+    print(solution('31','4'))
+    print(solution('11','5'))
+    print(solution('3','13'))
+    print(solution('1','2'))
+
+    print(solution('3','5')) #is true
+    print(solution('10','13')) #is true
+
+
+    #print(solution('1000000000000000000000000000000000000000000000000','25'))
+
+    #print(solution('6','4'))
+    print(solution(str(10**50-1),str(10**50-2)))
+    #print(solution('bla','7'))
+    #print(solution('10000000000000000000000000000000000000000000000011','100000000000000000000000000000000000000000000000008'))
+
+
+    #i=10**50
+    i= 10**50#10**48
+    lastRes=-1
+    while(i<10**50):
+        ii=1
+        while (ii<1000):
+            if("impossible" == (solution(str(i),str(ii)))):
+                M = i
+                F = ii
+                if(not isDead(M,F)):
+                    print('intrs impossible:',i,ii)
+            else:
+                a=1
+                #print((solution(str(i),str(ii))),i,ii)
+
+            ii = ii + 1
+        i = i + 1
+
