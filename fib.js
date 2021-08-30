@@ -20,6 +20,6 @@ while(i <= 164)
 	
 }
 
-console.log(toString(sum))
+console.log(sum.toString())
 	
 	
