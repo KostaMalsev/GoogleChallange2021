@@ -11,6 +11,7 @@ def recon(M,F):
     while( (not impossible) and (not found) ):
 
         if((M ==1 or F ==1) ):
+        
             if(not M == F):
                 if(M > F):
                     length = length + M - 1
