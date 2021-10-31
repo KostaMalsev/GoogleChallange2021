@@ -66,6 +66,8 @@ def dataStructures()
     "year": 1964
   }
   
+  itemFromDictionary = thisdict.get("model")
+  
   
 
 
