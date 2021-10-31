@@ -39,7 +39,7 @@ def dataStructures()
     def myfunc(self):
       print("Hello my name is " + self.name)
     
-    x = 5
+    x = 5 #class memeber
   
   p1 = MyClass('bar',4)
   print(p1.x)
