@@ -59,7 +59,7 @@ def dataStructures()
   for x in myset:
     print(x)
   
-  #Dictionaries:
+  #Dictionaries: (no multiples allowed)
   thisdict = {
     "brand": "Ford",
     "model": "Mustang",
@@ -67,6 +67,13 @@ def dataStructures()
   }
   
   itemFromDictionary = thisdict.get("model")
+    
+  #get list of keys
+  x = thisdict.keys()
+  
+  #Set value to dictionary
+  car["color"] = "white"
+
   
   
 
