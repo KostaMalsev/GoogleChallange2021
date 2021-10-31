@@ -73,6 +73,14 @@ def dataStructures()
   
   #Set value to dictionary
   car["color"] = "white"
+  
+  #Touples:
+  mytuple = ("apple", "banana", "cherry")
+  secondElement = mytuple[1]
+  
+  #Return the third, fourth, and fifth item:
+  thistuple[2:5]
+  
 
   
   
