@@ -79,7 +79,15 @@ def dataStructures()
   secondElement = mytuple[1]
   
   #Return the third, fourth, and fifth item:
-  thistuple[2:5]
+  subData  = mytuple[2:5]
+  
+  for x in thistuple:
+  print(x)
+
+
+def Lambda()
+  x = lambda a : a + 10
+  print(x(5))
   
 
   
