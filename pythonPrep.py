@@ -58,6 +58,15 @@ def dataStructures()
   myset = {"apple", "banana", "cherry"}
   for x in myset:
     print(x)
+  
+  #Dictionaries:
+  thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+  }
+  
+  
 
 
   
