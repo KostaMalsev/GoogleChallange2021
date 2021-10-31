@@ -22,5 +22,16 @@ def conditions()
     print("b is greater than a")
 
 
+def dataStructures()
+
+  #Arrays:
+  cars = ["Ford", "Volvo", "BMW"]
+  print cars[0]
+  x = len(cars)
+  
+    
+  
+  
+
 
       
