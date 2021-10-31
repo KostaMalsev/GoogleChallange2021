@@ -29,6 +29,17 @@ def dataStructures()
   print cars[0]
   x = len(cars)
   
+  #Classes:
+  class MyClass:
+    x = 5
+  
+  p1 = MyClass()
+  print(p1.x)
+
+    
+    
+
+  
     
   
   
