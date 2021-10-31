@@ -37,11 +37,19 @@ def dataStructures()
       self.age = age
     
     def myfunc(self):
-    print("Hello my name is " + self.name)
+      print("Hello my name is " + self.name)
+    
     x = 5
   
   p1 = MyClass('bar',4)
   print(p1.x)
+  print(p1.myfunc)
+  
+  
+  
+  
+  
+  
   
   
   
