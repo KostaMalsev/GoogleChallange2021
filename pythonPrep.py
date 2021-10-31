@@ -31,14 +31,18 @@ def dataStructures()
   
   #Classes:
   class MyClass:
+  
     def __init__(self, name, age):
       self.name = name
       self.age = age
-
+    
+    def myfunc(self):
+    print("Hello my name is " + self.name)
     x = 5
   
-  p1 = MyClass()
+  p1 = MyClass('bar',4)
   print(p1.x)
+  
   
   
 
